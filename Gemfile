@@ -27,6 +27,11 @@ gem 'redis', '~> 3.0'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
+# Provide bootstrap-based templates when scaffolding views
+gem 'bootstrap-generators'
+
+gem 'haml-rails'
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 

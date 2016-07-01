@@ -1,0 +1,14 @@
+.page-header
+  = link_to docs_path, class: 'btn btn-default' do
+    %span.glyphicon.glyphicon-list-alt
+    Back
+  = link_to edit_doc_path(@doc), class: 'btn btn-primary' do
+    %span.glyphicon.glyphicon-pencil
+    Edit
+  %h1 Show doc
+
+%dl.dl-horizontal
+  %dt Title:
+  %dd= @doc.title
+  %dt Slug:
+  %dd= @doc.slug

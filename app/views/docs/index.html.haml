@@ -1,0 +1,24 @@
+.page-header
+  = link_to new_doc_path, class: 'btn btn-primary' do
+    %span.glyphicon.glyphicon-plus
+    New Doc
+  %h1 Listing docs
+
+.table-responsive
+  %table.table.table-striped.table-bordered.table-hover
+    %thead
+      %tr
+        %th Title
+        %th Slug
+        %th
+        %th
+        %th
+
+    %tbody
+      - @docs.each do |doc|
+        %tr
+          %td= doc.title
+          %td= doc.slug
+          %td= link_to 'Show', doc
+          %td= link_to 'Edit', edit_doc_path(doc)
+          %td= link_to 'Destroy', doc, data: { confirm: 'Are you sure?' }, method: :delete
