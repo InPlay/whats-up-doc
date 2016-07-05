@@ -10,10 +10,30 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160701145340) do
+ActiveRecord::Schema.define(version: 20160703225540) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "doc_items", force: :cascade do |t|
+    t.integer  "doc_id"
+    t.text     "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "doc_sorted_list_positions", force: :cascade do |t|
+    t.integer "item_id"
+    t.integer "sorted_list_id"
+    t.integer "position",       default: -1
+  end
+
+  create_table "doc_sorted_lists", force: :cascade do |t|
+    t.string  "title"
+    t.string  "max_in_words"
+    t.string  "min_in_words"
+    t.integer "doc_id"
+  end
 
   create_table "docs", force: :cascade do |t|
     t.string   "title"

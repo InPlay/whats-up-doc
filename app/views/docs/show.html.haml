@@ -5,10 +5,29 @@
   = link_to edit_doc_path(@doc), class: 'btn btn-primary' do
     %span.glyphicon.glyphicon-pencil
     Edit
-  %h1 Show doc
 
-%dl.dl-horizontal
-  %dt Title:
-  %dd= @doc.title
-  %dt Slug:
-  %dd= @doc.slug
+  %h1= @doc.title
+
+= form_for(@doc, remote: true) do |f|
+  = f.fields_for(:add_item, @doc.items.new) do |item_f|
+    .form-group
+      = item_f.label :content, class: 'col-sm-2 control-label'
+      .col-sm-10
+        = item_f.text_field :content, class: 'form-control'
+    .form-group
+      .col-sm-offset-2.col-sm-10
+        = item_f.submit 'Add Item', class: 'btn btn-primary'
+
+  .row
+    .col-md-4
+      .row
+        = f.fields_for :sorted_lists do |list_f|
+          .sorted-list.col-xs-6
+            %h3= list_f.object.title
+            %ul.list-group.sortable
+              = list_f.fields_for :positions do |position_f|
+                %li.list-group-item
+                  = position_f.object.item.content
+                  = position_f.hidden_field :position, class: 'item-position'
+
+
