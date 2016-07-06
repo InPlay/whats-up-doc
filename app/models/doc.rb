@@ -8,6 +8,18 @@ class Doc < ApplicationRecord
     slug
   end
 
+  def whats_next
+    sorted_lists.inject({}) do |acc, list|
+      list.positions.each do |position|
+        acc[position.item] ||= []
+        acc[position.item] << position.position
+      end
+      acc
+    end.
+    sort_by {|(_item, positions)| positions.sum}.
+    map(&:first)
+  end
+
   private
 
   def generate_slug

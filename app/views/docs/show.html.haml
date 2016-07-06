@@ -16,6 +16,8 @@
           %a{href: '#tab2', 'data-toggle': 'tab'}
         %li
           %a{href: '#tab3', 'data-toggle': 'tab'}
+        %li
+          %a{href: '#tab4', 'data-toggle': 'tab'}
 
       .tab-content
         .tab-pane#tab1
@@ -52,6 +54,17 @@
                       %i.fa.fa-ellipsis-v.fa-lg
                       = position_f.object.item.content
                       = position_f.hidden_field :position, class: 'item-position'
+
+        .tab-pane{id: "tab4"}
+          - i += 1
+          .row.items
+            .col-sm-6
+              %h3 Here's What's Up!
+              %ul.list-group
+                - @doc.whats_next.each do |item|
+                  - next if item.new_record?
+                  %li.list-group-item
+                    = item.content
 
         .navbar.navbar-inverse.navbar-fixed-bottom.visible-xs-block
           .container
