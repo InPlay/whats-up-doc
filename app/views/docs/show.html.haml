@@ -19,61 +19,75 @@
         %li
           %a{href: '#tab4', 'data-toggle': 'tab'}
 
-      .tab-content
-        .tab-pane#tab1
-          %h3 Add Items
+      .row
+        .tab-content.col-sm-4
+          .tab-pane#tab1
+            %h3 Add Items
 
-          = f.fields_for(:add_item, @doc.items.new) do |item_f|
-            .row
-              .col-xs-9
-                .form-group
-                  = item_f.text_field :content, class: 'form-control', placeholder: '"Solve World Hunger", "Watch a Movie", ...'
-              .col-xs-2
-                .form-group
-                  = item_f.submit 'Add', class: 'btn btn-primary'
+            = f.fields_for(:add_item, @doc.items.new) do |item_f|
+              .row
+                .col-xs-9
+                  .form-group
+                    = item_f.text_field :content, class: 'form-control', placeholder: '"Solve World Hunger", "Watch a Movie", ...'
+                .col-xs-2
+                  .form-group
+                    = item_f.submit 'Add', class: 'btn btn-primary'
 
+              .row.items
+                .col-sm-12
+                  %ul.list-group
+                    - @doc.items.order('created_at ASC').each do |item|
+                      - next if item.new_record?
+                      %li.list-group-item
+                        = item.content
+
+          - i = 2
+          = f.fields_for :sorted_lists do |list_f|
+            .tab-pane{id: "tab#{i}"}
+              - i += 1
+              .row
+                .sorted-list.col-sm-12
+                  %h3= list_f.object.title
+                  %ul.list-group.sortable
+                    = list_f.fields_for :positions do |position_f|
+                      %li.item.list-group-item
+                        %i.fa.fa-ellipsis-v.fa-lg
+                        %i.fa.fa-ellipsis-v.fa-lg
+                        = position_f.object.item.content
+                        = position_f.hidden_field :position, class: 'item-position'
+
+          .tab-pane{id: "tab4"}
+            - i += 1
             .row.items
-              .col-sm-6
+              .col-sm-12
+                %h3 Here's What's Up!
                 %ul.list-group
-                  - @doc.items.order('created_at ASC').each do |item|
+                  - @doc.whats_next.each do |item|
                     - next if item.new_record?
                     %li.list-group-item
                       = item.content
 
-        - i = 2
-        = f.fields_for :sorted_lists do |list_f|
-          .tab-pane{id: "tab#{i}"}
-            - i += 1
-            .row
-              .sorted-list.col-sm-6
-                %h3= list_f.object.title
-                %ul.list-group.sortable
-                  = list_f.fields_for :positions do |position_f|
-                    %li.item.list-group-item
-                      %i.fa.fa-ellipsis-v.fa-lg
-                      %i.fa.fa-ellipsis-v.fa-lg
-                      = position_f.object.item.content
-                      = position_f.hidden_field :position, class: 'item-position'
+          .navbar.navbar-inverse.navbar-fixed-bottom.visible-xs-block
+            .container-fluid
+              %ul.nav.navbar-nav.wizard
+                %li.previous.col-xs-6
+                  %button.btn{href: '#', data: {toggle: 'collapse'}}
+                    %i.fa.fa-lg.fa-chevron-left
+                    Back
+                %li.next.col-xs-6{style: 'text-align: right'}
+                  %button.btn{href: '#', data: {toggle: 'collapse'}}
+                    Next
+                    %i.fa.fa-lg.fa-chevron-right
 
-        .tab-pane{id: "tab4"}
-          - i += 1
-          .row.items
-            .col-sm-6
-              %h3 Here's What's Up!
-              %ul.list-group
-                - @doc.whats_next.each do |item|
-                  - next if item.new_record?
-                  %li.list-group-item
-                    = item.content
-
-        .navbar.navbar-inverse.navbar-fixed-bottom.visible-xs-block
-          .container
-            %ul.nav.navbar-nav.wizard
-              %li.previous.col-xs-6
-                %button.btn{href: '#', data: {toggle: 'collapse'}}
-                  %i.fa.fa-lg.fa-chevron-left
-                  Back
-              %li.next.col-xs-6{style: 'text-align: right'}
-                %button.btn{href: '#', data: {toggle: 'collapse'}}
-                  Next
-                  %i.fa.fa-lg.fa-chevron-right
+          .navbar.navbar-clear.hidden-xs
+            .container-fluid
+              %ul.nav.navbar-nav.wizard.navbar-left
+                %li.previous
+                  %button.btn{href: '#', data: {toggle: 'collapse'}}
+                    %i.fa.fa-lg.fa-chevron-left
+                    Back
+              %ul.nav.navbar-nav.wizard.navbar-right
+                %li.next
+                  %button.btn{href: '#', data: {toggle: 'collapse'}}
+                    Next
+                    %i.fa.fa-lg.fa-chevron-right
