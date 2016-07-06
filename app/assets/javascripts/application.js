@@ -15,10 +15,11 @@
 //= require turbolinks
 //= require bootstrap
 //= require Sortable
+//= require jquery.bootstrap.wizard
 //= require_tree .
 
 $(document).on('turbolinks:load', function() {
   setTimeout(function() {
     $('.alert-thumb-success').fadeOut();
-  }, 500)
+  }, 500);
 })

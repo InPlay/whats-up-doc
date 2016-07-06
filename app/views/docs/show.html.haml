@@ -8,43 +8,59 @@
 
 = form_for(@doc, remote: true) do |f|
   .container
-    .row
-      .col-sm-6
-        .row
-          = f.fields_for :sorted_lists do |list_f|
-            .sorted-list.col-sm-6
-              %h3= list_f.object.title
-              %ul.list-group.sortable
-                = list_f.fields_for :positions do |position_f|
-                  %li.list-group-item
-                    %i.fa.fa-ellipsis-v.fa-lg
-                    %i.fa.fa-ellipsis-v.fa-lg
-                    = position_f.object.item.content
-                    = position_f.hidden_field :position, class: 'item-position'
+    #doc-steps
+      %ul{style: 'position: absolute; top: 0'}
+        %li
+          %a{href: '#tab1', 'data-toggle': 'tab'}
+        %li
+          %a{href: '#tab2', 'data-toggle': 'tab'}
+        %li
+          %a{href: '#tab3', 'data-toggle': 'tab'}
 
-  = f.fields_for(:add_item, @doc.items.new) do |item_f|
-    .add-item-container
-      #add-item.collapse
-        .container
-          .row
-            .col-sm-4
-              .form-group
-                = item_f.text_field :content, class: 'form-control'
-            .col-sm-2.col-xs-6
-              .form-group
-                = item_f.submit 'Add Item', class: 'btn btn-primary'
-            .visible-xs-block.col-xs-6.pull-right{style: 'text-align: right'}
-              .form-group
-                %button.btn{type: 'button', data: {toggle: 'collapse', target: '#add-item'}} Cancel
+      .tab-content
+        .tab-pane#tab1
+          %h3 Add Items
 
-  .navbar.navbar-inverse.navbar-fixed-bottom.visible-xs-block
-    .container
-      %ul.nav.navbar-nav
-        %li.col-xs-6
-          %button.btn{href: '#add-item', data: {toggle: 'collapse'}}
-            %i.fa.fa-lg.fa-plus-circle
-            Item
-        %li.col-xs-6{style: 'text-align: right'}
-          %button.btn{href: '#', data: {toggle: 'collapse'}}
-            Next
-            %i.fa.fa-lg.fa-chevron-right
+          = f.fields_for(:add_item, @doc.items.new) do |item_f|
+            .row
+              .col-xs-9
+                .form-group
+                  = item_f.text_field :content, class: 'form-control', placeholder: '"Solve World Hunger", "Watch a Movie", ...'
+              .col-xs-2
+                .form-group
+                  = item_f.submit 'Add', class: 'btn btn-primary'
+
+            .row.items
+              .col-sm-6
+                %ul.list-group
+                  - @doc.items.order('created_at ASC').each do |item|
+                    - next if item.new_record?
+                    %li.list-group-item
+                      = item.content
+
+        - i = 2
+        = f.fields_for :sorted_lists do |list_f|
+          .tab-pane{id: "tab#{i}"}
+            - i += 1
+            .row
+              .sorted-list.col-sm-6
+                %h3= list_f.object.title
+                %ul.list-group.sortable
+                  = list_f.fields_for :positions do |position_f|
+                    %li.item.list-group-item
+                      %i.fa.fa-ellipsis-v.fa-lg
+                      %i.fa.fa-ellipsis-v.fa-lg
+                      = position_f.object.item.content
+                      = position_f.hidden_field :position, class: 'item-position'
+
+        .navbar.navbar-inverse.navbar-fixed-bottom.visible-xs-block
+          .container
+            %ul.nav.navbar-nav.wizard
+              %li.previous.col-xs-6
+                %button.btn{href: '#', data: {toggle: 'collapse'}}
+                  %i.fa.fa-lg.fa-chevron-left
+                  Back
+              %li.next.col-xs-6{style: 'text-align: right'}
+                %button.btn{href: '#', data: {toggle: 'collapse'}}
+                  Next
+                  %i.fa.fa-lg.fa-chevron-right

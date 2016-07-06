@@ -2,6 +2,8 @@
 // All this logic will automatically be available in application.js.
 
 $(document).on('turbolinks:load', function() {
+  $('#doc-steps').bootstrapWizard();
+
   $('.sorted-list .sortable').each(function(index, element) {
     Sortable.create(element, {
       onSort: function (event) {
@@ -15,19 +17,21 @@ $(document).on('turbolinks:load', function() {
       }
     })
   })
-
 });
 
 (function() {
-
-  var currentScroll = 0;
+  var currentScroll = 0
+    , currentTab = 0
 
   addEventListener("turbolinks:before-render", function() {
     currentScroll = document.documentElement.scrollTop || document.body.scrollTop
+    currentTab = $('#doc-steps').bootstrapWizard('currentIndex');
   })
 
   addEventListener("turbolinks:render", function() {
     document.documentElement.scrollTop = document.body.scrollTop = currentScroll
+    $('#doc-steps').bootstrapWizard();
+    $('#doc-steps').bootstrapWizard('show', currentTab);
   })
 
 })();
