@@ -1,33 +1,50 @@
-.page-header
-  = link_to docs_path, class: 'btn btn-default' do
-    %span.glyphicon.glyphicon-list-alt
-    Back
-  = link_to edit_doc_path(@doc), class: 'btn btn-primary' do
-    %span.glyphicon.glyphicon-pencil
-    Edit
-
-  %h1= @doc.title
+.container
+  .page-header.hidden-xs
+    %h1
+      = @doc.title
+      - flash.each do |name, msg|
+        - if name == 'notice'
+          .alert-thumb-success.pull-right.emj &#x1F44D;
 
 = form_for(@doc, remote: true) do |f|
+  .container
+    .row
+      .col-sm-6
+        .row
+          = f.fields_for :sorted_lists do |list_f|
+            .sorted-list.col-sm-6
+              %h3= list_f.object.title
+              %ul.list-group.sortable
+                = list_f.fields_for :positions do |position_f|
+                  %li.list-group-item
+                    %i.fa.fa-ellipsis-v.fa-lg
+                    %i.fa.fa-ellipsis-v.fa-lg
+                    = position_f.object.item.content
+                    = position_f.hidden_field :position, class: 'item-position'
+
   = f.fields_for(:add_item, @doc.items.new) do |item_f|
-    .form-group
-      = item_f.label :content, class: 'col-sm-2 control-label'
-      .col-sm-10
-        = item_f.text_field :content, class: 'form-control'
-    .form-group
-      .col-sm-offset-2.col-sm-10
-        = item_f.submit 'Add Item', class: 'btn btn-primary'
+    .add-item-container
+      #add-item.collapse
+        .container
+          .row
+            .col-sm-4
+              .form-group
+                = item_f.text_field :content, class: 'form-control'
+            .col-sm-2.col-xs-6
+              .form-group
+                = item_f.submit 'Add Item', class: 'btn btn-primary'
+            .visible-xs-block.col-xs-6.pull-right{style: 'text-align: right'}
+              .form-group
+                %button.btn{type: 'button', data: {toggle: 'collapse', target: '#add-item'}} Cancel
 
-  .row
-    .col-md-4
-      .row
-        = f.fields_for :sorted_lists do |list_f|
-          .sorted-list.col-xs-6
-            %h3= list_f.object.title
-            %ul.list-group.sortable
-              = list_f.fields_for :positions do |position_f|
-                %li.list-group-item
-                  = position_f.object.item.content
-                  = position_f.hidden_field :position, class: 'item-position'
-
-
+  .navbar.navbar-inverse.navbar-fixed-bottom.visible-xs-block
+    .container
+      %ul.nav.navbar-nav
+        %li.col-xs-6
+          %button.btn{href: '#add-item', data: {toggle: 'collapse'}}
+            %i.fa.fa-lg.fa-plus-circle
+            Item
+        %li.col-xs-6{style: 'text-align: right'}
+          %button.btn{href: '#', data: {toggle: 'collapse'}}
+            Next
+            %i.fa.fa-lg.fa-chevron-right

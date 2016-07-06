@@ -69,6 +69,7 @@ class DocsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_doc
       @doc = Doc.find_by_slug(params[:id])
+      @page_title = @doc&.title
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

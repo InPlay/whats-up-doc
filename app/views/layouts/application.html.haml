@@ -6,7 +6,7 @@
     %meta{content: "width=device-width, initial-scale=1", name: "viewport"}
     %meta{content: "", name: "description"}
     %meta{content: "", name: "author"}
-    %title Starter Template for Bootstrap
+    %title= [@page_title, "What's Up (Next) Doc"].join(' | ')
 
     / HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries
     /[if lt IE 9]
@@ -16,7 +16,7 @@
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = csrf_meta_tags
 
-  %body
+  %body{class: [controller_name, action_name]}
     %nav.navbar.navbar-inverse.navbar-fixed-top{role: "navigation"}
       .container
         .navbar-header
@@ -25,20 +25,20 @@
             %span.icon-bar
             %span.icon-bar
             %span.icon-bar
-          = link_to "Project name", "#", class: "navbar-brand"
+          = link_to @page_title || "What's Up (Next) Doc", "/", class: "navbar-brand visible-xs-block"
+          = link_to "What's Up (Next) Doc", "/", class: "navbar-brand hidden-xs"
+
+          - flash.each do |name, msg|
+            - if name == 'notice'
+              .visible-xs-block
+                .alert-thumb-success.pull-right.emj &#x1F44D;
         #navbar.collapse.navbar-collapse
+          %h3.visible-xs-block What's Up Doc
           %ul.nav.navbar-nav
-            %li.active
-              %a{href: "#"} Home
+            %li{class: request.path == root_path ? 'active' : ''}
+              %a{href: "/"} Home
             %li
-              %a{href: "#about"} About
+              %a{href: "/about"} About
             %li
-              %a{href: "#contact"} Contact
-    .container
-      - flash.each do |name, msg|
-        = content_tag :div, class: "alert alert-#{name == :error ? "danger" : "success" } alert-dismissable", role: "alert" do
-          %button.close{type: "button", data: {dismiss: "alert"} }
-            %span{aria: {hidden: "true"} } &times;
-            %span.sr-only Close
-          = msg
-      = yield
+              %a{href: "/contact"} Contact
+    = yield

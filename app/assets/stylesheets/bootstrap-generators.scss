@@ -3,7 +3,7 @@
 @import "bootstrap.scss";
 
 body {
-  padding-top: $navbar-height + 10px;
+  padding-top: $navbar-height
 }
 
 .page-header {
@@ -13,6 +13,10 @@ body {
 
   a.btn + a.btn {
     margin-right: 8px;
+  }
+
+  @media only screen and (max-width: $screen-sm-max) {
+    margin-top: 0px;
   }
 }
 

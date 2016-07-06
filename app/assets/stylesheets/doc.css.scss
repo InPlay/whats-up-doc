@@ -1,0 +1,37 @@
+@import "bootstrap-variables.scss";
+
+body.docs {
+  margin-bottom: 50px;
+
+  .page-header a.btn {
+    padding: 0;
+  }
+
+  #navbar h3 {
+    color: #eeeeee;
+  }
+
+  .sorted-list .fa-ellipsis-v {
+    color: #eee;
+    position: relative;
+    left: -5px;
+  }
+
+  @media only screen and (min-width: $screen-xs-max) {
+    #add-item { display: block !important }
+  }
+
+  @media only screen and (max-width: $screen-xs-max) {
+    .add-item-container {
+      box-shadow: 0px 0px 20px #6f6f6f;
+      position: fixed;
+      bottom: 50px;
+      background-color: white;
+      width: 100%;
+
+      #add-item {
+        margin-top: 20px;
+      }
+    }
+  }
+}

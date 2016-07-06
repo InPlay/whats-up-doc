@@ -15,4 +15,19 @@ $(document).on('turbolinks:load', function() {
       }
     })
   })
-})
+
+});
+
+(function() {
+
+  var currentScroll = 0;
+
+  addEventListener("turbolinks:before-render", function() {
+    currentScroll = document.documentElement.scrollTop || document.body.scrollTop
+  })
+
+  addEventListener("turbolinks:render", function() {
+    document.documentElement.scrollTop = document.body.scrollTop = currentScroll
+  })
+
+})();

@@ -10,6 +10,28 @@
  * files in this directory. Styles in this file should be added after the last require_* statement.
  * It is generally better to create a new file per style scope.
  *
+ *= require scss/font-awesome
  *= require_tree .
  *= require_self
  */
+
+/*
+EmojiSymbols Font (c)blockworks - Kenichi Kaneko
+http://emojisymbols.com/
+*/
+@font-face {
+  font-family: "EmojiSymbols";
+  src: url('EmojiSymbols-Regular.woff') format('woff');
+  text-decoration: none;
+  font-style: normal;
+}
+.emj {
+  font-family: "EmojiSymbols";
+  line-height: 1;
+}
+
+.alert-thumb-success {
+  font-size: 34px;
+  padding: 5px;
+  color: #66ca68;
+}
