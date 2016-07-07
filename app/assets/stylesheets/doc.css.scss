@@ -46,12 +46,21 @@ body.docs {
 
   .sortable .item {
     cursor: move;
+    cursor: grab;
+    cursor: -moz-grab;
+    cursor: -webkit-grab;
     padding-right: 60px; // for the move buttons
 
     &:hover {
       .fa-ellipsis-v {
         color: #bbb;
       }
+    }
+
+    &:active {
+      cursor: grabbing;
+      cursor: -moz-grabbing;
+      cursor: -webkit-grabbing;
     }
   }
 

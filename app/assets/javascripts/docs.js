@@ -17,6 +17,7 @@ $(document).on('turbolinks:load', function() {
 
   $('.item-list .sortable').each(function(index, element) {
     Sortable.create(element, {
+      filter: '.move-up, .move-down', // otherwise moving via buttons breaks sortable
       onSort: function (event) {
         recalculatePositionAndSubmitAfterItemMoved(event.item)
       }
@@ -28,6 +29,7 @@ $(document).on('turbolinks:load', function() {
     item.insertBefore(item.prevAll('.item')[0])
     recalculatePositionAndSubmitAfterItemMoved(item)
   })
+
   $('.move-down').on('click', function() {
     var item = $(this).closest('.item')
     item.insertAfter(item.nextAll('.item')[0])
