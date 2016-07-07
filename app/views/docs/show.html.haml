@@ -95,16 +95,16 @@
 
     .col-sm-8.hidden-xs
       #chart
-        %svg{width: "640", height: "480"}
+        %svg{width: "750", height: "550"}
         :javascript
           ;(function() {
             var chartData = #{@doc.as_chart.to_json}
               , xScale = d3.scaleLinear()
                 .domain([0, #{@doc.items.count - 1}])
-                .range([600, 20])
+                .range([640, 20])
               , yScale = d3.scaleLinear()
                 .domain([0, #{@doc.items.count - 1}])
-                .range([20, 460])
+                .range([20, 520])
               , svg = d3.select('#chart svg')
               , xAxis = d3.axisLeft()
               , yAxis = d3.axisBottom()
@@ -132,18 +132,18 @@
             // x "axis"
             svg.insert('line', 'rect')
             .attr('x1', 0)
-            .attr('y1', yScale(#{@doc.items.count - 1}/2) - 15)
-            .attr('x2', 640)
-            .attr('y2', yScale(#{@doc.items.count - 1}/2) - 15)
+            .attr('y1', yScale(#{@doc.items.count - 1}/2))
+            .attr('x2', 920)
+            .attr('y2', yScale(#{@doc.items.count - 1}/2))
             .attr("stroke-width", 2)
             .attr("stroke", "black");
 
             // y "axis"
             svg.insert('line', 'rect')
-            .attr('x1', xScale(#{@doc.items.count - 1}/2) + 15)
+            .attr('x1', xScale(#{@doc.items.count - 1}/2) + 40)
             .attr('y1', 0)
-            .attr('x2', xScale(#{@doc.items.count - 1}/2) + 15)
-            .attr('y2', 480)
+            .attr('x2', xScale(#{@doc.items.count - 1}/2) + 40)
+            .attr('y2', 550)
             .attr("stroke-width", 2)
             .attr("stroke", "black");
 
