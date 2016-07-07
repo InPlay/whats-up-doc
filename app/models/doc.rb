@@ -1,6 +1,6 @@
 class Doc < ApplicationRecord
   has_many :items
-  has_many :sorted_lists
+  has_many :lists
 
   before_create :generate_slug
 
@@ -9,7 +9,7 @@ class Doc < ApplicationRecord
   end
 
   def whats_next
-    sorted_lists.inject({}) do |acc, list|
+    lists.inject({}) do |acc, list|
       list.positions.each do |position|
         acc[position.item] ||= []
         acc[position.item] << position.position

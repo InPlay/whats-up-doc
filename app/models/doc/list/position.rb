@@ -1,4 +1,4 @@
-class Doc::SortedList::Position < ApplicationRecord
+class Doc::List::Position < ApplicationRecord
   belongs_to :item
-  belongs_to :sorted_list
+  belongs_to :list
 end

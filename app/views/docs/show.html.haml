@@ -44,7 +44,7 @@
                           = item.content
 
             - i = 2
-            = f.fields_for :sorted_lists do |list_f|
+            = f.fields_for :lists do |list_f|
               .tab-pane{id: "tab#{i}"}
                 - i += 1
                 .row

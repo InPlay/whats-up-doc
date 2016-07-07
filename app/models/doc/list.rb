@@ -1,4 +1,4 @@
-class Doc::SortedList < ApplicationRecord
+class Doc::List < ApplicationRecord
   has_many :positions, -> { order 'position' }
   has_many :items, through: :positions
 

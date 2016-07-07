@@ -9,7 +9,7 @@ feature 'Interacting with a doc' do
     fill_in 'new_item_content', with: 'Lorem ipsum'
     click_button 'Add Item'
 
-    within('#sorted_list_1') { expect(page).to have_content('Lorem ipsum') }
-    within('#sorted_list_2') { expect(page).to have_content('Lorem ipsum') }
+    within('#list_1') { expect(page).to have_content('Lorem ipsum') }
+    within('#list_2') { expect(page).to have_content('Lorem ipsum') }
   end
 end

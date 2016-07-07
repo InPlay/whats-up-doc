@@ -77,7 +77,7 @@ class DocsController < ApplicationController
       params.require(:doc).permit(
         :title,
         add_item: [:content],
-        sorted_lists_attributes: [
+        lists_attributes: [
           :id,
           {positions_attributes: [:position, :id]}
         ]
