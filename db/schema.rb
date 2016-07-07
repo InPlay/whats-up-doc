@@ -29,17 +29,18 @@ ActiveRecord::Schema.define(version: 20160707192019) do
   end
 
   create_table "doc_lists", force: :cascade do |t|
-    t.string  "title"
-    t.string  "max_in_words"
-    t.string  "min_in_words"
-    t.integer "doc_id"
+    t.string "title"
+    t.string "max_in_words"
+    t.string "min_in_words"
   end
 
   create_table "docs", force: :cascade do |t|
     t.string   "title"
     t.string   "slug"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+    t.integer  "impact_list_id"
+    t.integer  "implementation_list_id"
   end
 
 end

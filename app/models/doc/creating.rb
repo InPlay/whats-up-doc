@@ -1,12 +1,12 @@
 class Doc::Creating < Doc
   include Gerund
 
-  after_create :add_default_lists
+  before_validation :build_default_lists, on: :create
 
   private
 
-  def add_default_lists
-    lists.create(title: 'Impact', max_in_words: 'High', min_in_words: 'Low')
-    lists.create(title: 'Implementation', max_in_words: 'Easy', min_in_words: 'Hard')
+  def build_default_lists
+    build_impact_list(title: 'Impact', max_in_words: 'High', min_in_words: 'Low')
+    build_implementation_list(title: 'Implementation', max_in_words: 'Easy', min_in_words: 'Hard')
   end
 end

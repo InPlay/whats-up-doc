@@ -15,7 +15,7 @@ $(document).on('turbolinks:load', function() {
     $(movedItem).closest('form').submit()
   }
 
-  $('.sorted-list .sortable').each(function(index, element) {
+  $('.item-list .sortable').each(function(index, element) {
     Sortable.create(element, {
       onSort: function (event) {
         recalculatePositionAndSubmitAfterItemMoved(event.item)

@@ -77,7 +77,11 @@ class DocsController < ApplicationController
       params.require(:doc).permit(
         :title,
         add_item: [:content],
-        lists_attributes: [
+        impact_list_attributes: [
+          :id,
+          {positions_attributes: [:position, :id]}
+        ],
+        implementation_list_attributes: [
           :id,
           {positions_attributes: [:position, :id]}
         ]

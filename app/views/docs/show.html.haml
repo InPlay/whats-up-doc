@@ -43,12 +43,29 @@
                         %li.list-group-item
                           = item.content
 
-            - i = 2
-            = f.fields_for :lists do |list_f|
-              .tab-pane{id: "tab#{i}"}
-                - i += 1
+            = f.fields_for :impact_list do |list_f|
+              .tab-pane{id: "tab2"}
                 .row
-                  .sorted-list.col-sm-12
+                  .item-list.col-sm-12
+                    %h3= list_f.object.title
+                    %ul.list-group.sortable
+                      = list_f.fields_for :positions do |position_f|
+                        %li.item.list-group-item
+                          %i.fa.fa-ellipsis-v.fa-lg
+                          %i.fa.fa-ellipsis-v.fa-lg
+                          = position_f.object.item.content
+                          = position_f.hidden_field :position, class: 'item-position'
+
+                          .move-item-buttons
+                            %a.move-up
+                              %i.fa.fa-arrow-circle-up.fa-2x
+                            %a.move-down
+                              %i.fa.fa-arrow-circle-down.fa-2x
+
+            = f.fields_for :implementation_list do |list_f|
+              .tab-pane{id: "tab3"}
+                .row
+                  .item-list.col-sm-12
                     %h3= list_f.object.title
                     %ul.list-group.sortable
                       = list_f.fields_for :positions do |position_f|
@@ -65,7 +82,6 @@
                               %i.fa.fa-arrow-circle-down.fa-2x
 
             .tab-pane{id: "tab4"}
-              - i += 1
               .row.items
                 .col-sm-12
                   %h3 Here's What's Up!
