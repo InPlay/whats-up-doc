@@ -1,0 +1,19 @@
+= fields_for doc do |f|
+  = f.fields_for list_type, list do |list_f|
+    .tab-pane{id: list_type}
+      .row
+        .item-list.col-sm-12
+          %h3= list_f.object.title
+          %ul.list-group.sortable
+            = list_f.fields_for :positions do |position_f|
+              %li.item.list-group-item
+                %i.fa.fa-ellipsis-v.fa-lg
+                %i.fa.fa-ellipsis-v.fa-lg
+                = position_f.object.item.content
+                = position_f.hidden_field :position, class: 'item-position'
+
+                .move-item-buttons
+                  %a.move-up
+                    %i.fa.fa-arrow-circle-up.fa-2x
+                  %a.move-down
+                    %i.fa.fa-arrow-circle-down.fa-2x

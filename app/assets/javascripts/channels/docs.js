@@ -1,4 +1,10 @@
-App.docs = App.cable.subscriptions.create("DocsChannel", {
+var docSlug
+;(function() {
+  var parts = window.location.href.split('/');
+  docSlug = parts[parts.length - 1]
+})()
+
+App.docs = App.cable.subscriptions.create({'channel': "DocsChannel", 'slug': docSlug}, {
   connected: function() {
     // Called when the subscription is ready for use on the server
   },
@@ -8,6 +14,19 @@ App.docs = App.cable.subscriptions.create("DocsChannel", {
   },
 
   received: function(data) {
-    // Called when there's incoming data on the websocket for this channel
+    if (data['items']) {
+      $('#items .list-group').html(data['items'])
+    }
+    if (data['impact_list']) {
+      $('#impact_list .row').replaceWith($(data['impact_list']).find('.row'))
+    }
+    if (data['implementation_list']) {
+      $('#implementation_list .row').replaceWith($(data['implementation_list']).find('.row'))
+    }
+    if (data['chart']) {
+      $('#chart').replaceWith(data['chart'])
+    }
+
+    App.docStuff()
   }
 });

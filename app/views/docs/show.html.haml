@@ -14,16 +14,16 @@
         #doc-steps
           %ul{style: 'position: absolute; top: 0'}
             %li
-              %a{href: '#tab1', 'data-toggle': 'tab'}
+              %a{href: '#items', 'data-toggle': 'tab'}
             %li
-              %a{href: '#tab2', 'data-toggle': 'tab'}
+              %a{href: '#impact_list', 'data-toggle': 'tab'}
             %li
-              %a{href: '#tab3', 'data-toggle': 'tab'}
+              %a{href: '#implementation_list', 'data-toggle': 'tab'}
             %li
-              %a{href: '#tab4', 'data-toggle': 'tab'}
+              %a{href: '#results', 'data-toggle': 'tab'}
 
           .tab-content
-            .tab-pane#tab1
+            .tab-pane#items
               %h3 Add Items
 
               = f.fields_for(:add_item, @doc.items.new) do |item_f|
@@ -38,58 +38,22 @@
                 .row.items
                   .col-sm-12
                     %ul.list-group
-                      - @doc.items.order('created_at ASC').each do |item|
-                        - next if item.new_record?
-                        %li.list-group-item
-                          = item.content
+                      = render f.object.items.order('created_at ASC')
 
-            = f.fields_for :impact_list do |list_f|
-              .tab-pane{id: "tab2"}
-                .row
-                  .item-list.col-sm-12
-                    %h3= list_f.object.title
-                    %ul.list-group.sortable
-                      = list_f.fields_for :positions do |position_f|
-                        %li.item.list-group-item
-                          %i.fa.fa-ellipsis-v.fa-lg
-                          %i.fa.fa-ellipsis-v.fa-lg
-                          = position_f.object.item.content
-                          = position_f.hidden_field :position, class: 'item-position'
+            = render f.object.impact_list,
+              doc: @doc,
+              list_type: :impact_list
 
-                          .move-item-buttons
-                            %a.move-up
-                              %i.fa.fa-arrow-circle-up.fa-2x
-                            %a.move-down
-                              %i.fa.fa-arrow-circle-down.fa-2x
+            = render f.object.implementation_list,
+              doc: @doc,
+              list_type: :implementation_list
 
-            = f.fields_for :implementation_list do |list_f|
-              .tab-pane{id: "tab3"}
-                .row
-                  .item-list.col-sm-12
-                    %h3= list_f.object.title
-                    %ul.list-group.sortable
-                      = list_f.fields_for :positions do |position_f|
-                        %li.item.list-group-item
-                          %i.fa.fa-ellipsis-v.fa-lg
-                          %i.fa.fa-ellipsis-v.fa-lg
-                          = position_f.object.item.content
-                          = position_f.hidden_field :position, class: 'item-position'
-
-                          .move-item-buttons
-                            %a.move-up
-                              %i.fa.fa-arrow-circle-up.fa-2x
-                            %a.move-down
-                              %i.fa.fa-arrow-circle-down.fa-2x
-
-            .tab-pane{id: "tab4"}
+            .tab-pane{id: "results"}
               .row.items
                 .col-sm-12
                   %h3 Here's What's Up!
                   %ul.list-group
-                    - @doc.whats_next.each do |item|
-                      - next if item.new_record?
-                      %li.list-group-item
-                        = item.content
+                    = render f.object.whats_next
 
             .navbar.navbar-inverse.navbar-fixed-bottom.visible-xs-block
               .container-fluid
@@ -117,58 +81,4 @@
                       %i.fa.fa-lg.fa-chevron-right
 
     .col-sm-8.hidden-xs
-      #chart
-        %svg{width: "750", height: "550"}
-        :javascript
-          ;(function() {
-            var chartData = #{@doc.as_chart.to_json}
-              , xScale = d3.scaleLinear()
-                .domain([0, #{@doc.items.count - 1}])
-                .range([640, 20])
-              , yScale = d3.scaleLinear()
-                .domain([0, #{@doc.items.count - 1}])
-                .range([20, 520])
-              , svg = d3.select('#chart svg')
-              , xAxis = d3.axisLeft()
-              , yAxis = d3.axisBottom()
-              , text = svg.selectAll('text').data(chartData).enter().append('text')
-
-            // graph the items
-            text
-            .attr('x', function(d) { return xScale(d.x) })
-            .attr('y', function(d) { return yScale(d.y) })
-            .text(function(d) { return d.text })
-
-            // add sticky-note boxes
-            svg.selectAll('text').each(function() {
-              var bbox = this.getBBox();
-              var padding = 8;
-              var rect = svg.insert("rect", "text")
-                  .attr("x", bbox.x - padding)
-                  .attr("y", bbox.y - 8)
-                  .attr("width", bbox.width + (padding*2))
-                  .attr("height", bbox.height + (padding*2))
-                  .style("fill", "#FFCC22")
-                  .attr('transform', "rotate(0.2)")
-            })
-
-            // x "axis"
-            svg.insert('line', 'rect')
-            .attr('x1', 0)
-            .attr('y1', yScale(#{@doc.items.count - 1}/2))
-            .attr('x2', 920)
-            .attr('y2', yScale(#{@doc.items.count - 1}/2))
-            .attr("stroke-width", 2)
-            .attr("stroke", "black");
-
-            // y "axis"
-            svg.insert('line', 'rect')
-            .attr('x1', xScale(#{@doc.items.count - 1}/2) + 40)
-            .attr('y1', 0)
-            .attr('x2', xScale(#{@doc.items.count - 1}/2) + 40)
-            .attr('y2', 550)
-            .attr("stroke-width", 2)
-            .attr("stroke", "black");
-
-          })()
-
+      = render 'chart', doc: @doc

@@ -46,7 +46,20 @@ class DocsController < ApplicationController
     respond_to do |format|
       @doc = @doc.becomes(Doc::AddingItem)
       if @doc.update(doc_params)
-        format.html { redirect_to @doc, notice: 'Doc was successfully updated.' }
+        ActionCable.server.broadcast "docs-#{@doc.slug}",
+          items: ApplicationController.render(
+            @doc.items),
+          impact_list: ApplicationController.render(
+            @doc.impact_list,
+            locals: {doc: @doc, list_type: :impact_list}),
+          implementation_list: ApplicationController.render(
+            @doc.implementation_list,
+            locals: {doc: @doc, list_type: :implementation_list}),
+          chart: ApplicationController.render(
+            partial: "docs/chart",
+            locals: {doc: @doc})
+
+        format.html { head status: :ok, location: @doc }
         format.json { render :show, status: :ok, location: @doc }
       else
         format.html { render :edit }
@@ -68,7 +81,7 @@ class DocsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_doc
-      @doc = Doc.find_by_slug(params[:id])
+      @doc = Doc.find_by_slug(params[:slug])
       @page_title = @doc&.title
     end
 
