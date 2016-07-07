@@ -1,20 +1,5 @@
 require 'rails_helper'
 
-module CapybaraExtension
-  def drag_by(right_by, down_by)
-    base.drag_by(right_by, down_by)
-  end
-end
-
-module CapybaraSeleniumExtension
-  def drag_by(right_by, down_by)
-    driver.browser.action.drag_and_drop_by(native, right_by, down_by).perform
-  end
-end
-
-::Capybara::Selenium::Node.send :include, CapybaraSeleniumExtension
-::Capybara::Node::Element.send :include, CapybaraExtension
-
 feature 'Understanding what to do next in life', :js do
   before do
     page.driver.browser.manage.window.resize_to 320, 568 # iPhone 5
@@ -48,6 +33,16 @@ feature 'Understanding what to do next in life', :js do
     move_item('Spread sustainable agriculture', below: 'Watch a documentary')
 
     click_button 'Next'
+
+    # recommendation
+    expect(page).to have_content("Here's What's Up!")
+    expect(all('.tab-pane.active li').map(&:text)).to eq([
+      "Spread sustainable agriculture",
+      "Fight pirates",
+      "End poverty",
+      "Run for president",
+      "Watch a documentary"
+    ])
   end
 
   def create_doc(title)
@@ -66,11 +61,13 @@ feature 'Understanding what to do next in life', :js do
     within('.items') { expect(page).to have_content(title) }
   end
 
-  # unfortunately HTML5 drag/drop support doesn't work in Selenium,
-  # so this just fails
   def move_item(title, below:)
     item = page.find('.item', text: title)
     below_item = page.find('.item', text: below)
-    item.drag_to(below_item)
+    while item.path < below_item.path
+      within(item) { find('.move-down').click }
+      item = page.find('.item', text: title)
+      below_item = page.find('.item', text: below)
+    end
   end
 end

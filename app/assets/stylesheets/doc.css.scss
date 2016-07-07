@@ -44,6 +44,30 @@ body.docs {
     }
   }
 
+  .sortable .item {
+    cursor: move;
+    padding-right: 60px; // for the move buttons
+
+    &:hover {
+      .fa-ellipsis-v {
+        color: #bbb;
+      }
+    }
+  }
+
+  .move-item-buttons {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+
+    a, a:visited { color: #eee }
+    a:hover {
+      color: #bbb;
+      text-decoration: none;
+      cursor: pointer;
+    }
+  }
+
   @media only screen and (min-width: $screen-xs-max) {
     .tab-pane { height: 500px; }
   }

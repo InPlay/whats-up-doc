@@ -4,22 +4,35 @@
 $(document).on('turbolinks:load', function() {
   $('#doc-steps').bootstrapWizard();
 
+  function recalculatePositionAndSubmitAfterItemMoved(movedItem) {
+    $(movedItem)
+    .closest('.sortable')
+    .find('input.item-position')
+    .each(function(index, input) {
+      $(input).val(index)
+    })
+
+    $(movedItem).closest('form').submit()
+  }
+
   $('.sorted-list .sortable').each(function(index, element) {
     Sortable.create(element, {
       onSort: function (event) {
-        var movedItem = event.item
-
-        $(movedItem).closest('.sortable').find('input.item-position').each(function(index, input) {
-          $(input).val(index)
-        })
-
-        $(movedItem).closest('form').submit()
+        recalculatePositionAndSubmitAfterItemMoved(event.item)
       }
     })
   })
 
-  var chart = d3.select('#chart')
-
+  $('.move-up').on('click', function() {
+    var item = $(this).closest('.item')
+    item.insertBefore(item.prevAll('.item')[0])
+    recalculatePositionAndSubmitAfterItemMoved(item)
+  })
+  $('.move-down').on('click', function() {
+    var item = $(this).closest('.item')
+    item.insertAfter(item.nextAll('.item')[0])
+    recalculatePositionAndSubmitAfterItemMoved(item)
+  })
 })
 
 ;(function() {
