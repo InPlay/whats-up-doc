@@ -23,8 +23,8 @@ RSpec.describe Doc, :type => :model do
 
       # a bit haphazard, I can't honestly say I grok how the formula is going to work,
       # but things changed...
-      subj.sorted_lists.first.positions[4].update_attribute(:position, 0)
-      subj.sorted_lists.first.positions[0].update_attribute(:position, 4)
+      subj.lists.first.positions[4].update_attribute(:position, 0)
+      subj.lists.first.positions[0].update_attribute(:position, 4)
 
       expect(subj.whats_next.map(&:content)).to eq([
         "Watch a documentary",
