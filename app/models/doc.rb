@@ -20,6 +20,14 @@ class Doc < ApplicationRecord
     map(&:first)
   end
 
+  def as_chart
+    whats_next.map do |item|
+      {text: item.content,
+       x: item.positions[1].position,
+       y: item.positions[0].position}
+    end
+  end
+
   private
 
   def generate_slug

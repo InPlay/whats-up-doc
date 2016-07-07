@@ -6,88 +6,146 @@
         - if name == 'notice'
           .alert-thumb-success.pull-right.emj &#x1F44D;
 
-= form_for(@doc, remote: true) do |f|
-  .container
-    #doc-steps
-      %ul{style: 'position: absolute; top: 0'}
-        %li
-          %a{href: '#tab1', 'data-toggle': 'tab'}
-        %li
-          %a{href: '#tab2', 'data-toggle': 'tab'}
-        %li
-          %a{href: '#tab3', 'data-toggle': 'tab'}
-        %li
-          %a{href: '#tab4', 'data-toggle': 'tab'}
+.container
+  .row
+    .col-sm-4
+      = form_for(@doc, remote: true) do |f|
+        #doc-steps
+          %ul{style: 'position: absolute; top: 0'}
+            %li
+              %a{href: '#tab1', 'data-toggle': 'tab'}
+            %li
+              %a{href: '#tab2', 'data-toggle': 'tab'}
+            %li
+              %a{href: '#tab3', 'data-toggle': 'tab'}
+            %li
+              %a{href: '#tab4', 'data-toggle': 'tab'}
 
-      .row
-        .tab-content.col-sm-4
-          .tab-pane#tab1
-            %h3 Add Items
+          .tab-content
+            .tab-pane#tab1
+              %h3 Add Items
 
-            = f.fields_for(:add_item, @doc.items.new) do |item_f|
-              .row
-                .col-xs-9
-                  .form-group
-                    = item_f.text_field :content, class: 'form-control', placeholder: '"Solve World Hunger", "Watch a Movie", ...'
-                .col-xs-2
-                  .form-group
-                    = item_f.submit 'Add', class: 'btn btn-primary'
+              = f.fields_for(:add_item, @doc.items.new) do |item_f|
+                .row
+                  .col-xs-9
+                    .form-group
+                      = item_f.text_field :content, class: 'form-control', placeholder: '"Solve World Hunger", "Watch a Movie", ...'
+                  .col-xs-2
+                    .form-group
+                      = item_f.submit 'Add', class: 'btn btn-primary'
 
+                .row.items
+                  .col-sm-12
+                    %ul.list-group
+                      - @doc.items.order('created_at ASC').each do |item|
+                        - next if item.new_record?
+                        %li.list-group-item
+                          = item.content
+
+            - i = 2
+            = f.fields_for :sorted_lists do |list_f|
+              .tab-pane{id: "tab#{i}"}
+                - i += 1
+                .row
+                  .sorted-list.col-sm-12
+                    %h3= list_f.object.title
+                    %ul.list-group.sortable
+                      = list_f.fields_for :positions do |position_f|
+                        %li.item.list-group-item
+                          %i.fa.fa-ellipsis-v.fa-lg
+                          %i.fa.fa-ellipsis-v.fa-lg
+                          = position_f.object.item.content
+                          = position_f.hidden_field :position, class: 'item-position'
+
+            .tab-pane{id: "tab4"}
+              - i += 1
               .row.items
                 .col-sm-12
+                  %h3 Here's What's Up!
                   %ul.list-group
-                    - @doc.items.order('created_at ASC').each do |item|
+                    - @doc.whats_next.each do |item|
                       - next if item.new_record?
                       %li.list-group-item
                         = item.content
 
-          - i = 2
-          = f.fields_for :sorted_lists do |list_f|
-            .tab-pane{id: "tab#{i}"}
-              - i += 1
-              .row
-                .sorted-list.col-sm-12
-                  %h3= list_f.object.title
-                  %ul.list-group.sortable
-                    = list_f.fields_for :positions do |position_f|
-                      %li.item.list-group-item
-                        %i.fa.fa-ellipsis-v.fa-lg
-                        %i.fa.fa-ellipsis-v.fa-lg
-                        = position_f.object.item.content
-                        = position_f.hidden_field :position, class: 'item-position'
+            .navbar.navbar-inverse.navbar-fixed-bottom.visible-xs-block
+              .container-fluid
+                %ul.nav.navbar-nav.wizard
+                  %li.previous.col-xs-6
+                    %button.btn{href: '#', data: {toggle: 'collapse'}}
+                      %i.fa.fa-lg.fa-chevron-left
+                      Back
+                  %li.next.col-xs-6{style: 'text-align: right'}
+                    %button.btn{href: '#', data: {toggle: 'collapse'}}
+                      Next
+                      %i.fa.fa-lg.fa-chevron-right
 
-          .tab-pane{id: "tab4"}
-            - i += 1
-            .row.items
-              .col-sm-12
-                %h3 Here's What's Up!
-                %ul.list-group
-                  - @doc.whats_next.each do |item|
-                    - next if item.new_record?
-                    %li.list-group-item
-                      = item.content
+            .navbar.navbar-clear.hidden-xs
+              .container-fluid
+                %ul.nav.navbar-nav.wizard.navbar-left
+                  %li.previous
+                    %button.btn{href: '#', data: {toggle: 'collapse'}}
+                      %i.fa.fa-lg.fa-chevron-left
+                      Back
+                %ul.nav.navbar-nav.wizard.navbar-right
+                  %li.next
+                    %button.btn{href: '#', data: {toggle: 'collapse'}}
+                      Next
+                      %i.fa.fa-lg.fa-chevron-right
 
-          .navbar.navbar-inverse.navbar-fixed-bottom.visible-xs-block
-            .container-fluid
-              %ul.nav.navbar-nav.wizard
-                %li.previous.col-xs-6
-                  %button.btn{href: '#', data: {toggle: 'collapse'}}
-                    %i.fa.fa-lg.fa-chevron-left
-                    Back
-                %li.next.col-xs-6{style: 'text-align: right'}
-                  %button.btn{href: '#', data: {toggle: 'collapse'}}
-                    Next
-                    %i.fa.fa-lg.fa-chevron-right
+    .col-sm-8.hidden-xs
+      #chart
+        %svg{width: "640", height: "480"}
+        :javascript
+          ;(function() {
+            var chartData = #{@doc.as_chart.to_json}
+              , xScale = d3.scaleLinear()
+                .domain([0, #{@doc.items.count - 1}])
+                .range([600, 20])
+              , yScale = d3.scaleLinear()
+                .domain([0, #{@doc.items.count - 1}])
+                .range([20, 460])
+              , svg = d3.select('#chart svg')
+              , xAxis = d3.axisLeft()
+              , yAxis = d3.axisBottom()
+              , text = svg.selectAll('text').data(chartData).enter().append('text')
 
-          .navbar.navbar-clear.hidden-xs
-            .container-fluid
-              %ul.nav.navbar-nav.wizard.navbar-left
-                %li.previous
-                  %button.btn{href: '#', data: {toggle: 'collapse'}}
-                    %i.fa.fa-lg.fa-chevron-left
-                    Back
-              %ul.nav.navbar-nav.wizard.navbar-right
-                %li.next
-                  %button.btn{href: '#', data: {toggle: 'collapse'}}
-                    Next
-                    %i.fa.fa-lg.fa-chevron-right
+            // graph the items
+            text
+            .attr('x', function(d) { return xScale(d.x) })
+            .attr('y', function(d) { return yScale(d.y) })
+            .text(function(d) { return d.text })
+
+            // add sticky-note boxes
+            svg.selectAll('text').each(function() {
+              var bbox = this.getBBox();
+              var padding = 8;
+              var rect = svg.insert("rect", "text")
+                  .attr("x", bbox.x - padding)
+                  .attr("y", bbox.y - 8)
+                  .attr("width", bbox.width + (padding*2))
+                  .attr("height", bbox.height + (padding*2))
+                  .style("fill", "#FFCC22")
+                  .attr('transform', "rotate(0.2)")
+            })
+
+            // x "axis"
+            svg.insert('line', 'rect')
+            .attr('x1', 0)
+            .attr('y1', yScale(#{@doc.items.count - 1}/2) - 15)
+            .attr('x2', 640)
+            .attr('y2', yScale(#{@doc.items.count - 1}/2) - 15)
+            .attr("stroke-width", 2)
+            .attr("stroke", "black");
+
+            // y "axis"
+            svg.insert('line', 'rect')
+            .attr('x1', xScale(#{@doc.items.count - 1}/2) + 15)
+            .attr('y1', 0)
+            .attr('x2', xScale(#{@doc.items.count - 1}/2) + 15)
+            .attr('y2', 480)
+            .attr("stroke-width", 2)
+            .attr("stroke", "black");
+
+          })()
+

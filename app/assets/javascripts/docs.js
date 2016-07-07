@@ -17,21 +17,24 @@ $(document).on('turbolinks:load', function() {
       }
     })
   })
-});
 
-(function() {
+  var chart = d3.select('#chart')
+
+})
+
+;(function() {
   var currentScroll = 0
     , currentTab = 0
 
   addEventListener("turbolinks:before-render", function() {
     currentScroll = document.documentElement.scrollTop || document.body.scrollTop
-    currentTab = $('#doc-steps').bootstrapWizard('currentIndex');
+    currentTab = $('#doc-steps').bootstrapWizard('currentIndex')
   })
 
   addEventListener("turbolinks:render", function() {
     document.documentElement.scrollTop = document.body.scrollTop = currentScroll
-    $('#doc-steps').bootstrapWizard();
-    $('#doc-steps').bootstrapWizard('show', currentTab);
+    $('#doc-steps').bootstrapWizard()
+    $('#doc-steps').bootstrapWizard('show', currentTab)
   })
 
 })();

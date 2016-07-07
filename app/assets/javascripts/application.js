@@ -16,6 +16,7 @@
 //= require bootstrap
 //= require Sortable
 //= require jquery.bootstrap.wizard
+//= require d3
 //= require_tree .
 
 $(document).on('turbolinks:load', function() {

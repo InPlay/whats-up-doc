@@ -17,6 +17,16 @@ body.docs {
     left: -5px;
   }
 
+  #doc-steps .nav.nav-pills {
+    // we're trying to hide these visually, but the JS library needs them to be
+    // on the page (and not simply hidden)...
+    pointer-events: none;
+
+    li.active > a, li > a:hover, li > a:focus {
+      background-color: transparent;
+    }
+  }
+
   .navbar {
     &.navbar-clear .wizard li.disabled {
       .btn, .btn:hover, .btn:focus {
@@ -32,5 +42,9 @@ body.docs {
     &.navbar-clear .navbar-left {
       margin-left: -15px;
     }
+  }
+
+  @media only screen and (min-width: $screen-xs-max) {
+    .tab-pane { height: 440px; }
   }
 }
