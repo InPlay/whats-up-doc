@@ -28,10 +28,13 @@
           = link_to @page_title || "What's Up (Next) Doc", "/", class: "navbar-brand visible-xs-block"
           = link_to "What's Up (Next) Doc", "/", class: "navbar-brand hidden-xs"
 
-          - flash.each do |name, msg|
-            - if name == 'notice'
-              .visible-xs-block
-                .alert-thumb-success.pull-right.emj &#x1F44D;
+          - if @notice
+            .visible-xs-block
+              - if @notice == 'thumbsup'
+                .notice-icon.pull-right.emj &#x1F44D;
+              - elsif @notice == 'shared'
+                %i.fa.fa-user-plus.fa-lg.notice-icon.pull-right
+
         #navbar.collapse.navbar-collapse
           %h3.visible-xs-block What's Up Doc
           %ul.nav.navbar-nav

@@ -19,8 +19,3 @@
 //= require d3
 //= require_tree .
 
-$(document).on('turbolinks:load', function() {
-  setTimeout(function() {
-    $('.alert-thumb-success').fadeOut();
-  }, 500);
-})

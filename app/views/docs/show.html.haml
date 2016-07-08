@@ -1,11 +1,12 @@
-- @doc ||= doc if defined?(doc)
 .container
   .page-header.hidden-xs
     %h1
       = @doc.title
-      - flash.each do |name, msg|
-        - if name == 'notice'
-          .alert-thumb-success.pull-right.emj &#x1F44D;
+      - if @notice
+        - if @notice == 'thumbsup'
+          .notice-icon.pull-right.emj &#x1F44D;
+        - elsif @notice == 'shared'
+          %i.fa.fa-user-plus.fa-2x.notice-icon.pull-right
 
 .container
   .row
@@ -86,4 +87,5 @@
                       %i.fa.fa-lg.fa-chevron-right
 
     .col-sm-8.hidden-xs
-      = render 'chart', doc: @doc
+      = render partial: 'docs/chart', locals: {doc: @doc}
+

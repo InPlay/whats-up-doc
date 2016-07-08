@@ -47,19 +47,10 @@ class DocsController < ApplicationController
       @doc = @doc.becomes(Doc::AddingItem)
       if @doc.update(doc_params)
         ActionCable.server.broadcast "docs-#{@doc.slug}",
-          items: ApplicationController.render(
-            @doc.items),
-          impact_list: ApplicationController.render(
-            @doc.impact_list,
-            locals: {doc: @doc, list_type: :impact_list}),
-          implementation_list: ApplicationController.render(
-            @doc.implementation_list,
-            locals: {doc: @doc, list_type: :implementation_list}),
-          whats_up: ApplicationController.render(
-            @doc.whats_next),
-          chart: ApplicationController.render(
-            partial: "docs/chart",
-            locals: {doc: @doc})
+          html: ApplicationController.render(
+            template: 'docs/show',
+            assigns: {doc: @doc, notice: 'shared', page_title: @page_title}
+        )
 
         format.html { head status: :ok, location: @doc }
         format.json { render :show, status: :ok, location: @doc }

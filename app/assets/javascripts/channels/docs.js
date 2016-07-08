@@ -14,20 +14,18 @@ App.docs = App.cable.subscriptions.create({'channel': "DocsChannel", 'slug': doc
   },
 
   received: function(data) {
-    if (data['items']) {
-      $('#items .list-group').html(data['items'])
-    }
-    if (data['impact_list']) {
-      $('#impact_list .row').replaceWith($(data['impact_list']).find('.row'))
-    }
-    if (data['implementation_list']) {
-      $('#implementation_list .row').replaceWith($(data['implementation_list']).find('.row'))
-    }
-    if (data['whats_up']) {
-      $('#whats_up .list-group').html(data['whats_up'])
-    }
-    if (data['chart']) {
-      $('#chart').replaceWith(data['chart'])
+    if (data.html) {
+      // Need to figure out a way to not copy/paste this...
+      currentScroll = document.documentElement.scrollTop || document.body.scrollTop
+      currentTab = $('#doc-steps').bootstrapWizard('currentIndex')
+      currentAddItemContent = $('#doc_add_item_content').val()
+
+      $('body').html(data.html.match(/<body[\s\S]*body>/))
+
+      document.documentElement.scrollTop = document.body.scrollTop = currentScroll
+      $('#doc-steps').bootstrapWizard()
+      $('#doc-steps').bootstrapWizard('show', currentTab)
+      $('#doc_add_item_content').val(currentAddItemContent)
     }
 
     App.docStuff()

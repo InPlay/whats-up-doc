@@ -36,6 +36,10 @@ App.docStuff = function() {
     recalculatePositionAndSubmitAfterItemMoved(item)
   })
 
+  setTimeout(function() {
+    $('.notice-icon').fadeOut();
+  }, 500);
+
   App.makeChart()
 }
 
@@ -96,18 +100,20 @@ App.makeChart = function() {
 ;(function() {
   var currentScroll = 0
     , currentTab = 0
+    , currentAddItemContent
 
   addEventListener("turbolinks:before-render", function() {
     currentScroll = document.documentElement.scrollTop || document.body.scrollTop
     currentTab = $('#doc-steps').bootstrapWizard('currentIndex')
+    currentAddItemContent = $('#doc_add_item_content').val()
   })
 
   addEventListener("turbolinks:render", function() {
     document.documentElement.scrollTop = document.body.scrollTop = currentScroll
     $('#doc-steps').bootstrapWizard()
     $('#doc-steps').bootstrapWizard('show', currentTab)
+    $('#doc_add_item_content').val(currentAddItemContent)
   })
-
 })();
 
 $(document).on('turbolinks:load', function() {
