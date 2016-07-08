@@ -118,5 +118,5 @@ $(document).on('turbolinks:load', function() {
   })
 
   App.docStuff()
-})()
+});
 
