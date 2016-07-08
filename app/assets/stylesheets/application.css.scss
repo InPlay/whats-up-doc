@@ -21,7 +21,7 @@ http://emojisymbols.com/
 */
 @font-face {
   font-family: "EmojiSymbols";
-  src: url('EmojiSymbols-Regular.woff') format('woff');
+  src: url(asset-path('EmojiSymbols-Regular.woff')) format('woff');
   text-decoration: none;
   font-style: normal;
 }
