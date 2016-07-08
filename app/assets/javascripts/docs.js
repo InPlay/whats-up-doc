@@ -111,7 +111,7 @@ App.makeChart = function() {
 })();
 
 $(document).on('turbolinks:load', function() {
-  if (!$('body').hasClass('docs')) return
+  if (!$('body').hasClass('docs show')) return
 
   $(document).on('ajax:success', function() {
     $('form input[type="text"]').val('')
