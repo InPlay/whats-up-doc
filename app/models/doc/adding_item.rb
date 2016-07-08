@@ -13,9 +13,8 @@ class Doc::AddingItem < Doc
   private
 
   def add_item_to_top_of_all_lists(item)
-    [impact_list, implementation_list].each do |list|
-      list.positions.create(item: item, position: -1)
-      list.positions.update_all("position = position + 1")
-    end
+    max_impact_position = impact_list.positions.last&.position || -1
+    impact_list.positions.create(item: item, position: max_impact_position + 1)
+    implementation_list.positions.create(item: item, position: 0)
   end
 end

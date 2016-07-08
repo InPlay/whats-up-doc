@@ -35,3 +35,14 @@ http://emojisymbols.com/
   padding: 5px;
   color: #66ca68;
 }
+
+.navbar.navbar-inverse .wizard {
+  .btn.btn-transparent {
+    background-color: transparent;
+    color: #fff;
+  }
+  li.disabled .btn.btn-transparent {
+    color: #666;
+  }
+}
+

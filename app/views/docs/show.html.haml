@@ -24,13 +24,18 @@
 
           .tab-content
             .tab-pane#items
-              %h3 Add Items
 
               = f.fields_for(:add_item, @doc.items.new) do |item_f|
                 .row
+                  .col-xs-12
+                    %h3 Add Items
+                .row
                   .col-xs-9
+
                     .form-group
-                      = item_f.text_field :content, class: 'form-control', placeholder: '"Solve World Hunger", "Watch a Movie", ...'
+                      = item_f.text_field :content,
+                        class: 'form-control',
+                        placeholder: '"Solve World Hunger", "Watch a Movie", ...'
                   .col-xs-2
                     .form-group
                       = item_f.submit 'Add', class: 'btn btn-primary'
@@ -38,7 +43,7 @@
                 .row.items
                   .col-sm-12
                     %ul.list-group
-                      = render f.object.items.order('created_at ASC')
+                      = render f.object.items.order('created_at DESC')
 
             = render f.object.impact_list,
               doc: @doc,
@@ -48,7 +53,7 @@
               doc: @doc,
               list_type: :implementation_list
 
-            .tab-pane{id: "results"}
+            .tab-pane#results
               .row.items
                 .col-sm-12
                   %h3 Here's What's Up!
@@ -59,11 +64,11 @@
               .container-fluid
                 %ul.nav.navbar-nav.wizard
                   %li.previous.col-xs-6
-                    %button.btn{href: '#', data: {toggle: 'collapse'}}
+                    %button.btn.btn-transparent{href: '#', data: {toggle: 'collapse'}}
                       %i.fa.fa-lg.fa-chevron-left
                       Back
                   %li.next.col-xs-6{style: 'text-align: right'}
-                    %button.btn{href: '#', data: {toggle: 'collapse'}}
+                    %button.btn.btn-transparent{href: '#', data: {toggle: 'collapse'}}
                       Next
                       %i.fa.fa-lg.fa-chevron-right
 

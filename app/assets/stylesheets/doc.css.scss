@@ -35,7 +35,7 @@ body.docs {
     }
     &.navbar-inverse .wizard li.disabled {
       .btn, .btn:hover, .btn:focus {
-        color: #bbb;
+        color: #666;
       }
     }
 
@@ -78,6 +78,15 @@ body.docs {
   }
 
   @media only screen and (min-width: $screen-xs-max) {
-    .tab-pane { height: 500px; }
+    .tab-pane { height: 460px; }
+  }
+
+  @media only screen and (max-width: $screen-xs-max) {
+    // https://github.com/twbs/bootstrap/issues/2159
+    font-size: 16px;
+    .form-control {
+      font-size: 16px;
+    }
   }
 }
+
