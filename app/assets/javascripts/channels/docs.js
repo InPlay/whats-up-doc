@@ -23,6 +23,9 @@ App.docs = App.cable.subscriptions.create({'channel': "DocsChannel", 'slug': doc
     if (data['implementation_list']) {
       $('#implementation_list .row').replaceWith($(data['implementation_list']).find('.row'))
     }
+    if (data['whats_up']) {
+      $('#whats_up .list-group').html(data['whats_up'])
+    }
     if (data['chart']) {
       $('#chart').replaceWith(data['chart'])
     }

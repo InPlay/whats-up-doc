@@ -55,6 +55,8 @@ class DocsController < ApplicationController
           implementation_list: ApplicationController.render(
             @doc.implementation_list,
             locals: {doc: @doc, list_type: :implementation_list}),
+          whats_up: ApplicationController.render(
+            @doc.whats_next),
           chart: ApplicationController.render(
             partial: "docs/chart",
             locals: {doc: @doc})
