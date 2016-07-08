@@ -105,12 +105,16 @@ App.makeChart = function() {
     , currentAddItemContent
 
   addEventListener("turbolinks:before-render", function() {
+    if (!$('body').hasClass('docs show')) return
+
     currentScroll = document.documentElement.scrollTop || document.body.scrollTop
     currentTab = $('#doc-steps').bootstrapWizard('currentIndex')
     currentAddItemContent = $('#doc_add_item_content').val()
   })
 
   addEventListener("turbolinks:render", function() {
+    if (!$('body').hasClass('docs show')) return
+
     document.documentElement.scrollTop = document.body.scrollTop = currentScroll
     $('#doc-steps').bootstrapWizard()
     $('#doc-steps').bootstrapWizard('show', currentTab)
