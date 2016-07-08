@@ -24,13 +24,15 @@ App.docStuff = function() {
     })
   })
 
-  $('.move-up').on('click', function() {
+  var clickEvent = $.support.touch ? "tap" : "click";
+
+  $('.move-up').on(clickEvent, function() {
     var item = $(this).closest('.item')
     item.insertBefore(item.prevAll('.item')[0])
     recalculatePositionAndSubmitAfterItemMoved(item)
   })
 
-  $('.move-down').on('click', function() {
+  $('.move-down').on(clickEvent, function() {
     var item = $(this).closest('.item')
     item.insertAfter(item.nextAll('.item')[0])
     recalculatePositionAndSubmitAfterItemMoved(item)

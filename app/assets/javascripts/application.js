@@ -16,6 +16,7 @@
 //= require bootstrap
 //= require Sortable
 //= require jquery.bootstrap.wizard
+//= require jquery.mobile.custom
 //= require d3
 //= require_tree .
 
