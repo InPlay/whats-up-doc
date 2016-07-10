@@ -84,10 +84,28 @@ App.makeChart = function() {
   svg.insert('line', 'rect')
   .attr('x1', 0)
   .attr('y1', yScale((itemCount - 1)/2))
-  .attr('x2', 920)
+  .attr('x2', 750)
   .attr('y2', yScale((itemCount - 1)/2))
   .attr("stroke-width", 2)
   .attr("stroke", "black");
+
+  svg.insert('text', 'rect')
+  .attr('x', 625)
+  .attr('y', yScale((itemCount - 1)/2) - 10)
+  .text('Implementation')
+  .attr('style', 'font-size: 18px')
+
+  svg.insert('text', 'rect')
+  .attr('x', 715)
+  .attr('y', yScale((itemCount - 1)/2) + 20)
+  .text('Easy')
+  .attr('style', 'font-style: italic')
+
+  svg.insert('text', 'rect')
+  .attr('x', 05)
+  .attr('y', yScale((itemCount - 1)/2) + 20)
+  .text('Hard')
+  .attr('style', 'font-style: italic')
 
   // y "axis"
   svg.insert('line', 'rect')
@@ -97,6 +115,25 @@ App.makeChart = function() {
   .attr('y2', 550)
   .attr("stroke-width", 2)
   .attr("stroke", "black");
+
+  svg.insert('text', 'rect')
+  .attr('x', yScale((itemCount - 1)/2) + 35)
+  .attr('y', 15)
+  .text('Impact')
+  .attr('style', 'font-size: 18px')
+
+  svg.insert('text', 'rect')
+  .attr('x', yScale((itemCount - 1)/2) + 110)
+  .attr('y', 15)
+  .text('High')
+  .attr('style', 'font-style: italic')
+
+  svg.insert('text', 'rect')
+  .attr('x', yScale((itemCount - 1)/2) + 110)
+  .attr('y', 545)
+  .text('Low')
+  .attr('style', 'font-style: italic')
+
 }
 
 ;(function() {
