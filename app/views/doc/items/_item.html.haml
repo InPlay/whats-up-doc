@@ -1,3 +1,12 @@
 - unless item.new_record?
   %li.list-group-item
-    = item.content
+    - if defined?(item_f)
+      .content-container.not-editable{class: dom_id(item)}
+        = item_f.text_field :content,
+          class: 'form-control',
+          disabled: 'disabled'
+      .pull-right
+        %a.btn.btn-edit{href: '#', data: {toggle: "editable", target: ".#{dom_id(item)}"}} edit
+    - else
+      = item.content
+

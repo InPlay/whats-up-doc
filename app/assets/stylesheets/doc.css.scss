@@ -64,6 +64,29 @@ body.docs {
     }
   }
 
+  .not-editable {
+    input {
+      cursor: default;
+      border: none;
+      box-shadow: none;
+      background-color: transparent;
+      padding: 0;
+    }
+  }
+
+  .btn-edit {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    &.active {
+      background-color: #f9f9f9;
+    }
+  }
+
+  .items .content-container  {
+    margin-right: 50px;
+  }
+
   .move-item-buttons {
     position: absolute;
     right: 5px;

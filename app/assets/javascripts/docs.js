@@ -4,6 +4,24 @@
 App.docStuff = function() {
   $('#doc-steps').bootstrapWizard();
 
+  $('a[data-toggle="editable"]').on('click', function(e) {
+    var link = $(e.target)
+      , target = $(link.data().target)
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (target.hasClass('not-editable')) {
+      target.removeClass('not-editable').addClass('editable')
+      target.find('input').prop( "disabled", false )
+      link.hasClass('btn-edit') ? link.addClass('active') : undefined
+    } else if (target.hasClass('editable')) {
+      target.removeClass('editable').addClass('not-editable')
+      link.hasClass('btn-edit') ? link.removeClass('active') : undefined
+      target.closest('form').submit()
+    }
+  })
+
   function recalculatePositionAndSubmitAfterItemMoved(movedItem) {
     $(movedItem)
     .closest('.sortable')
@@ -163,7 +181,7 @@ $(document).on('turbolinks:load', function() {
   if (!$('body').hasClass('docs show')) return
 
   $(document).on('ajax:success', function() {
-    $('form input[type="text"]').val('')
+    $('#new-item input[type="text"]').val('')
   })
 
   App.docStuff()

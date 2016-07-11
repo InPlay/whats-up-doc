@@ -30,7 +30,7 @@
                 .row
                   .col-xs-12
                     %h3 Add Items
-                .row
+                #new-item.row
                   .col-xs-9
 
                     .form-group
@@ -41,10 +41,11 @@
                     .form-group
                       = item_f.submit 'Add', class: 'btn btn-primary'
 
-                .row.items
-                  .col-sm-12
-                    %ul.list-group
-                      = render f.object.items.order('created_at DESC')
+              .row.items
+                .col-sm-12
+                  %ul.list-group
+                    = f.fields_for(:items, @doc.items.order('created_at DESC')) do |item_f|
+                      = render item_f.object, item_f: item_f
 
             = render f.object.impact_list,
               doc: @doc,
