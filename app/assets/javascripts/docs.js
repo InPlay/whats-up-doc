@@ -35,6 +35,7 @@ App.docStuff = function() {
 
   $('.item-list .sortable').each(function(index, element) {
     Sortable.create(element, {
+      animation: 150,
       filter: '.move-up, .move-down', // otherwise moving via buttons breaks sortable
       onSort: function (event) {
         recalculatePositionAndSubmitAfterItemMoved(event.item)
